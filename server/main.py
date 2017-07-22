@@ -22,7 +22,7 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         if len(tmp) == 2 and tmp[0] == '/mday':
             input_time = time.mktime(datetime.datetime.strptime(tmp[1], "%Y%m%d%H%M").timetuple())
             output_data = {}
-            tx_data_type = ['lat', 'lng', 'sbi', 'bemp', 'act']
+            tx_data_type = ['lat', 'lng', 'sbi', 'bemp', 'act', 'sna']
             target_file = ""
             min_diff = float("inf")
             
@@ -49,7 +49,8 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                     # output_data[sno]['lng'] = data['retVal'][sno]['lng']
 
             s.send_response(200)
-            s.send_header("Content-type", "application/json")
+            # s.send_header("Content-type", "application/json")
+            s.send_header("Access-Control-Allow-Origin", "*")
             s.end_headers()
             s.wfile.write(json.dumps(output_data, file, indent=4))
 
@@ -66,10 +67,12 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                     pack['bemp'] = data['retVal'][tmp[1]]['bemp']
                     pack['sbi'] = data['retVal'][tmp[1]]['sbi']
                     pack['act'] = data['retVal'][tmp[1]]['act']
+                    pack['sna'] = data['retVal'][tmp[1]]['sna']
                 output_data[mday] = pack
 
             s.send_response(200)
-            s.send_header("Content-type", "application/json")
+            #s.send_header("Content-type", "application/json")
+            s.send_header("Access-Control-Allow-Origin", "*")
             s.end_headers()
             s.wfile.write(json.dumps(output_data, file, indent=4))
         else :
